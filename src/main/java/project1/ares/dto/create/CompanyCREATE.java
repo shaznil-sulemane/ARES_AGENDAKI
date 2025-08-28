@@ -15,7 +15,7 @@ public class CompanyCREATE {
     private String phone;
     private String address;
 
-    private Map<String, String> metadata = new HashMap<>();
+    private Map<String, Object> metadata = new HashMap<>();
     private CompanyType type; // Tipo da empresa (ex: SALON, BARBERSHOP)
     private GeoLocation location; // Dados de geolocalização
 }

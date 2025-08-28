@@ -21,9 +21,9 @@ public class GlobalExceptionHandler {
 
     // Trata exceções de autorização (ex: usuário já existe, email duplicado, etc.)
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public Mono<ResponseEntity<ApiResponse<Object>>> handleIllegalArgument(AuthorizationDeniedException ex) {
+    public Mono<ResponseEntity<ApiResponse<Object>>> handleAuthorizationDenied(AuthorizationDeniedException ex) {
         return Mono.just(
-                ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new ApiResponse<>(false, ex.getMessage(), null))
         );
     }

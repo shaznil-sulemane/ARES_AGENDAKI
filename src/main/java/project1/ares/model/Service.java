@@ -13,13 +13,11 @@ import java.math.BigDecimal;
 public class Service {
     @Id
     private String id;
-
     private String companyId;   // FK para a Company (salão)
     private String name;
     private String description;
-
     private BigDecimal price;
+    private String category;
     private int durationMinutes;
-
     private boolean active;
 }

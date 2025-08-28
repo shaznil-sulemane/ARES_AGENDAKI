@@ -22,9 +22,12 @@ public class SecurityConfig {
                 .authorizeExchange(authorizeExchange ->
                         authorizeExchange
                                 .pathMatchers("/auth/**").permitAll()
+                                .pathMatchers("/pay").permitAll()
+                                .pathMatchers("/images/**").permitAll()
+                                .pathMatchers("/webhooks/paysuite").permitAll()
                                 .pathMatchers("/auth/me").authenticated()
                                 .pathMatchers("/admin/**").hasRole("ADMIN")
-                                .anyExchange().authenticated()
+                                .anyExchange().permitAll()
                 )
                 .addFilterAt(loggingFilter, SecurityWebFiltersOrder.AUTHENTICATION);
         return http.build();
