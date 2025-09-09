@@ -18,17 +18,15 @@ public class Invite {
     private String identifier;
     private List<Channel> channels = new ArrayList<>();
     private String companyId;
-    private String message;
     private Map<String, Object> metadata = new HashMap<>();
-    private String password;
     private LocalDateTime expitesAt;
     private Status status = Status.PENDING;
 
-    enum Status {
+    public enum Status {
         PENDING, ACCEPTED, REJECTED, EXPIRED
     }
 
-    enum Channel {
+    public enum Channel {
         WHATSAPP, EMAIL, SMS
     }
 }

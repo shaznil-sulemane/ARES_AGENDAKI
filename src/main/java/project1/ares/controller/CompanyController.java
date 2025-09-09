@@ -21,6 +21,7 @@ import project1.ares.repository.CompanyRepository;
 import project1.ares.repository.PlanRepository;
 import project1.ares.repository.UserRepository;
 import project1.ares.service.ImageService;
+import project1.ares.service.InviteService;
 import project1.ares.service.SequenceGeneratorService;
 import project1.ares.util.Regex;
 import reactor.core.publisher.Mono;
@@ -51,8 +52,9 @@ public class CompanyController {
     private final ImageService imageService;
     private final WebClient.Builder webClientBuilder;
     private final PlanRepository planRepository;
+    private final InviteService inviteService;
 
-    public CompanyController(CompanyRepository companyRepository, SequenceGeneratorService sequenceGeneratorService, FileStorageConfig fileConfig, UserRepository userRepository, ImageService imageService, WebClient.Builder webClientBuilder, PlanRepository planRepository) {
+    public CompanyController(CompanyRepository companyRepository, SequenceGeneratorService sequenceGeneratorService, FileStorageConfig fileConfig, UserRepository userRepository, ImageService imageService, WebClient.Builder webClientBuilder, PlanRepository planRepository, InviteService inviteService) {
         this.companyRepository = companyRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.fileConfig = fileConfig;
@@ -60,6 +62,7 @@ public class CompanyController {
         this.imageService = imageService;
         this.webClientBuilder = webClientBuilder;
         this.planRepository = planRepository;
+        this.inviteService = inviteService;
     }
 
     @GetMapping
@@ -314,23 +317,26 @@ public class CompanyController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/staff/{identifier}")
+    public Mono<ResponseEntity<ApiResponse<String>>> inviteStaff(@PathVariable String identifier, @RequestBody Map<String, Object> body) {
+        return inviteService.invite(String.valueOf(body.get("companyId")), identifier, List.of(Invite.Channel.WHATSAPP));
+    }
+
 //    private static final String API_URL = "https://paysuite.tech/api/v1";
     private static final String API_URL = "http://localhost:3000/api/v1";
-
     private static final String AUTH_TOKEN = "490|Y97U2s8OLOMtywgnwlRrX0FS9P6KH1x2BFQa2pFabe693b8d";
-
 
     @PostMapping("/pay")
     @PreAuthorize("hasRole('MANAGER')")
     public Mono<ResponseEntity<ApiResponse<String>>> pay(@RequestBody Map<String, String> bodyReq) {
         String planId = bodyReq.get("planId");
         String companyId = bodyReq.get("companyId");
-        String description = (String) bodyReq.getOrDefault("description", "Pedido padrão");
+        String description = bodyReq.getOrDefault("description", "Pedido padrão");
 
         // Se reference não fornecida → gerar sequencial
         Mono<String> referenceMono;
         if (bodyReq.containsKey("reference")) {
-            referenceMono = Mono.just((String) bodyReq.get("reference"));
+            referenceMono = Mono.just(bodyReq.get("reference"));
         } else {
             referenceMono = sequenceGeneratorService.generateId("invoice", "INV", 7);
         }
@@ -366,7 +372,7 @@ public class CompanyController {
                                             "amount", plan.getPrice().toString(),
                                             "reference", reference,
                                             "description", description,
-                                            "return_url", "http://192.168.0.103:5173/dashboard/manager",
+                                            "return_url", "http://localhost:5173/dashboard/manager",
                                             "callback_url", "https://bbea15be054b.ngrok-free.app/companies/paysuite/" + companyId
                                     );
 

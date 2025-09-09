@@ -28,7 +28,7 @@ public class EmailTemplates {
                     overflow: hidden;
                 }
                 .email-header {
-                    background-color: #005fa3;
+                    background-color: #00c951;
                     color: #ffffff;
                     text-align: center;
                     padding: 20px 10px;
@@ -51,13 +51,13 @@ public class EmailTemplates {
                 .email-otp {
                     font-size: 20px;
                     font-weight: bold;
-                    color: #005fa3;
+                    color: #00c951;
                     text-align: center;
                     margin: 20px 0;
                 }
                 .email-button {
                     display: block;
-                    background-color: #005fa3;
+                    background-color: #00c951;
                     color: #ffffff;
                     padding: 10px 20px;
                     border-radius: 5px;
@@ -315,6 +315,61 @@ public class EmailTemplates {
         <p>Equipe {{app_name}}</p>
         """;
 
+    public final String BOOKING_CONFIRMED_TEMPLATE = """
+    <h2>Agendamento Confirmado</h2>
+    <p>Olá {{nome}},</p>
+    <p>Seu agendamento foi confirmado com sucesso:</p>
+    <p><strong>Serviço:</strong> {{servico}}<br><strong>Profissional:</strong> {{profissional}}<br><strong>Data:</strong> {{data}} às {{hora}}</p>
+    <a href="{{link_detalhes}}" class="email-button">Ver Detalhes</a>
+    <p>Equipe {{app_name}}</p>
+    """;
+
+    public final String BOOKING_REMINDER_TEMPLATE = """
+    <h2>Lembrete de Agendamento</h2>
+    <p>Olá {{nome}},</p>
+    <p>Este é um lembrete do seu agendamento:</p>
+    <p><strong>Serviço:</strong> {{servico}}<br><strong>Profissional:</strong> {{profissional}}<br><strong>Data:</strong> {{data}} às {{hora}}</p>
+    <p>Chegue com 10 minutos de antecedência 😉</p>
+    <p>Equipe {{app_name}}</p>
+    """;
+
+    public final String BOOKING_CANCELLED_TEMPLATE = """
+    <h2>Agendamento Cancelado</h2>
+    <p>Olá {{nome}},</p>
+    <p>Seu agendamento de <strong>{{servico}}</strong> com {{profissional}} em {{data}} às {{hora}} foi cancelado.</p>
+    <p>Se não foi você quem cancelou, entre em contato com o suporte.</p>
+    <a href="https://agendaki.com/support" class="email-button">Suporte</a>
+    <p>Equipe {{app_name}}</p>
+    """;
+
+    public final String WORKER_INVITATION_TEMPLATE = """
+    <h2>Convite para se juntar ao {{app_name}}</h2>
+    <p>Olá {{nome}},</p>
+    <p>Você foi convidado(a) para se juntar à equipe de <strong>{{empresa}}</strong> no {{app_name}}.</p>
+    <p><strong>Função:</strong> {{cargo}}</p>
+    <a href="{{link_aceitar}}" class="email-button" style="background-color: #28a745;">Aceitar Convite</a>
+    <a href="{{link_recusar}}" class="email-button" style="background-color: #dc3545;">Recusar</a>
+    <p>Equipe {{app_name}}</p>
+    """;
+
+    public final String FEEDBACK_REQUEST_TEMPLATE = """
+    <h2>Ajude-nos a Melhorar</h2>
+    <p>Olá {{nome}},</p>
+    <p>Esperamos que tenha gostado do serviço <strong>{{servico}}</strong> realizado em {{data}}.</p>
+    <p>Gostaríamos muito de saber sua opinião!</p>
+    <a href="{{link_feedback}}" class="email-button">Deixar Avaliação</a>
+    <p>Equipe {{app_name}}</p>
+    """;
+
+    public final String PROMOTION_TEMPLATE = """
+    <h2>Promoção Especial para Você 🎉</h2>
+    <p>Olá {{nome}},</p>
+    <p>Aproveite nossa promoção exclusiva:</p>
+    <p><strong>{{descricao_promocao}}</strong></p>
+    <a href="{{link_promocao}}" class="email-button">Agendar Agora</a>
+    <p>Equipe {{app_name}}</p>
+    """;
+
     public String buildTemplate(int templateNum, Map<String, String> params) {
         String template = switch (templateNum) {
             case 0 -> WELCOME_TEMPLATE;
@@ -338,9 +393,14 @@ public class EmailTemplates {
             case 18 -> KYC_APPROVED_TEMPLATE;
             case 19 -> KYC_REJECTED_TEMPLATE;
             case 20 -> KYC_REQUEST_TEMPLATE;
+            case 21 -> BOOKING_CONFIRMED_TEMPLATE;
+            case 22 -> BOOKING_REMINDER_TEMPLATE;
+            case 23 -> BOOKING_CANCELLED_TEMPLATE;
+            case 24 -> WORKER_INVITATION_TEMPLATE;
+            case 25 -> FEEDBACK_REQUEST_TEMPLATE;
+            case 26 -> PROMOTION_TEMPLATE;
             default -> "";
         };
-
 
         // Processamento do template base
         String emailContent = DEFAULT_CONTENT

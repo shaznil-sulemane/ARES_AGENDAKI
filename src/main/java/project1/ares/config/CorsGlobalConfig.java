@@ -15,7 +15,7 @@ public class CorsGlobalConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://192.168.0.103:5173", "http://10.107.244.162", "http://10.107.244.162:5173")); // libera apenas o teu frontend
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://192.168.0.103:5173", "http://10.107.244.162", "http://10.107.244.162:5173", "http://10.29.159.162:5173", "http://172.16.1.100:5173")); // libera apenas o teu frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // permite todos os headers
         config.setAllowCredentials(true); // se usares cookies ou Authorization header
