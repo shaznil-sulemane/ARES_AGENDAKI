@@ -18,6 +18,7 @@ public class Payment {
     private String bookingId;
     private BigDecimal amount;
     private PaymentMethod method;
+    private PaymentStatus paymentStatus;
 
     private boolean success;
 
