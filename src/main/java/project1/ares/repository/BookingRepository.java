@@ -13,11 +13,23 @@ import java.util.List;
 
 public interface BookingRepository extends ReactiveMongoRepository<Booking, String> {
 
+    // Consultas básicas por cliente
+    Flux<Booking> findByClientId(String clientId);
+    Flux<Booking> findByClientIdAndStatus(String clientId, BookingStatus status);
+    Flux<Booking> findByClientIdAndStatusIn(String clientId, List<BookingStatus> statuses);
+
+    // Consultas por empresa
+    Flux<Booking> findByCompanyId(String companyId);
+    Flux<Booking> findByCompanyIdAndStartTimeBetween(String companyId, Instant startDate, Instant endDate);
+
+    // Consultas por status
+    Flux<Booking> findByStatus(BookingStatus status);
+    Flux<Booking> findByEndTimeBeforeAndStatus(Instant endTime, BookingStatus status);
 
     // Consultas otimizadas usando dados desnormalizados
-    List<Booking> findByServiceNameAndStatusIn(String serviceName, List<BookingStatus> statuses);
-    List<Booking> findByServicePriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
-    List<Booking> findByClientNameContainingIgnoreCase(String clientName);
+    Flux<Booking> findByServiceNameAndStatusIn(String serviceName, List<BookingStatus> statuses);
+    Flux<Booking> findByServicePriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    Flux<Booking> findByClientNameContainingIgnoreCase(String clientName);
 
     // Consulta de conflitos otimizada
     @Query("{ 'companyId': ?0, 'staffId': ?1, 'status': { $in: ['PENDING', 'CONFIRMED'] }, " +
@@ -29,5 +41,9 @@ public interface BookingRepository extends ReactiveMongoRepository<Booking, Stri
     Flux<List<Booking>> findConflictingBookings(String companyId, String staffId,
                                           Instant startTime, Instant endTime);
 
-    List<Booking> findByClientIdAndStatusIn(String clientId, List<BookingStatus> pending);
+    Flux<Booking> findByStatusInAndEndTimeBefore(
+            List<BookingStatus> statuses,
+            Instant endTime
+    );
+
 }

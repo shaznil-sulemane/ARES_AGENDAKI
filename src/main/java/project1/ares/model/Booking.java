@@ -152,4 +152,24 @@ public class Booking {
 
                 .build();
     }
+
+    private static String determineClientTimezone(User client) {
+        // Lógica básica baseada na moeda
+        String currency = client.getPreferences().getCurrency();
+        if ("MZN".equals(currency)) return "Africa/Maputo";
+        if ("ZAR".equals(currency)) return "Africa/Johannesburg";
+        if ("USD".equals(currency)) return "America/New_York";
+        if ("EUR".equals(currency)) return "Europe/London";
+        if ("BRL".equals(currency)) return "America/Sao_Paulo";
+
+        // Verificação rápida do telefone
+        String phone = client.getPhoneNumber();
+        if (phone != null) {
+            if (phone.contains("+258")) return "Africa/Maputo";
+            if (phone.contains("+27")) return "Africa/Johannesburg";
+            if (phone.contains("+55")) return "America/Sao_Paulo";
+        }
+
+        return "Africa/Maputo"; // padrão
+    }
 }

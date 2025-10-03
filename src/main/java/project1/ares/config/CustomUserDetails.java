@@ -29,10 +29,16 @@ public class CustomUserDetails implements UserDetails {
         return Set.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
+    public boolean hasRole(String roleName) {
+        if (role == null) return false;
+        return role.name().equalsIgnoreCase(roleName);
+    }
+
     @Override public String getPassword() { return password; }
     @Override public String getUsername() { return username; }
     @Override public boolean isAccountNonExpired() { return active; }
     @Override public boolean isAccountNonLocked() { return active; }
     @Override public boolean isCredentialsNonExpired() { return active; }
     @Override public boolean isEnabled() { return active; }
+
 }

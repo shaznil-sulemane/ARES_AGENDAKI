@@ -6,7 +6,7 @@ import lombok.Data;
 // Classes auxiliares para estatísticas
 @Data
 @AllArgsConstructor
-class BookingStatusCount {
+public class BookingStatusCount {
     private BookingStatus status;
     private Long count;
 }
