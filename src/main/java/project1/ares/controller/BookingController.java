@@ -471,7 +471,7 @@ public class BookingController {
                                 Map.entry("hasAvailability", available > 0),
                                 Map.entry("firstAvailableTime", firstAvailable != null ? firstAvailable.getStartTime() : null),
                                 Map.entry("lastAvailableTime", lastAvailable != null ? lastAvailable.getStartTime() : null),
-                                Map.entry("occupancyRate", slots.size() > 0
+                                Map.entry("occupancyRate", !slots.isEmpty()
                                         ? String.format("%.1f%%", occupied * 100.0 / slots.size())
                                         : "0%")
                         );
